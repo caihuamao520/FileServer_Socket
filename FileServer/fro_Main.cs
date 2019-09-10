@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace FileServer
 {
@@ -16,6 +17,7 @@ namespace FileServer
     {
         private Socket socketWatch;
         private Thread threadWatch;
+        private string _SaveDirectory = string.Empty;
         public fro_Main()
         {
             InitializeComponent();
@@ -23,7 +25,13 @@ namespace FileServer
 
         private void fro_Main_Load(object sender, EventArgs e)
         {
-
+            _SaveDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RecFile");
+            if(!Directory.Exists(_SaveDirectory))
+            {
+                Directory.CreateDirectory(_SaveDirectory);
+                ShowMesg("创建了‘RecFile’文件接收目录。");
+            }
+            this.txtSaveDirectory.Text = _SaveDirectory;
         }
 
         private Dictionary<string, Socket> dict;//通信套接字 集合
@@ -87,7 +95,7 @@ namespace FileServer
             while (true)
             {
                 // 定义一个2M的缓存区；  
-                byte[] arrMsgRec = new byte[1024 * 1024 * 2];
+                byte[] arrMsgRec = new byte[1024 * 1024 * 20];
                 // 将接受到的数据存入到输入  arrMsgRec中；  
                 int length = -1;
                 try
@@ -122,9 +130,9 @@ namespace FileServer
                 {
                     string strMsg = System.Text.Encoding.UTF8.GetString(arrMsgRec, 1, length - 1);// 将接受到的字节数据转化成字符串；  
                     //ShowMsg(strMsg);
-                    this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到信息，内容为：{1}", sokClient.RemoteEndPoint,strMsg) });
+                    this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到信息，内容为：{1}", sokClient.RemoteEndPoint, strMsg) });
                 }
-                if (arrMsgRec[0] == 1) // 表示接收到的是文件；  
+                else if (arrMsgRec[0] == 1) // 表示接收到的是文件；  
                 {
                     //SaveFileDialog sfd = new SaveFileDialog();
 
@@ -139,11 +147,43 @@ namespace FileServer
                     //        ShowMsg("文件保存成功：" + fileSavePath);
                     //    }
                     //}
+                    int i = 0;
+                    string strNewFileNamePath = string.Empty;
+                    do
+                    {
+                        i++;
+                        strNewFileNamePath = Path.Combine(_SaveDirectory, getFileName(i.ToString()));
+                    }
+                    while (File.Exists(strNewFileNamePath));
+
+                    using (FileStream fs = new FileStream(strNewFileNamePath, FileMode.OpenOrCreate))
+                    {
+                        fs.Write(arrMsgRec, 1, length - 1);
+                    }
 
                     this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到文件流，内容保存成功。", sokClient.RemoteEndPoint) });
                 }
+                else
+                {
+                    this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到无法解析的文件头标记，代码：{0}", arrMsgRec[0]) });
+                }
 
             }
+        }
+
+        private string getFileName(string fileName)
+        {
+            StringBuilder sb = new StringBuilder(fileName);
+
+            int iLenth = 8;
+            int fileLenth = fileName.Length;
+
+            for (; fileLenth < iLenth; fileLenth++)
+            {
+                sb.Insert(0, "0");
+            }
+
+            return sb.ToString();
         }
 
         private void ShowMesg(string content)
