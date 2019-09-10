@@ -1,6 +1,6 @@
 ﻿namespace FileClient
 {
-    partial class Form1
+    partial class fro_Mian
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,9 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // fro_Mian
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(522, 325);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "fro_Mian";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "客户端";
+            this.Load += new System.EventHandler(this.fro_Mian_Load);
+            this.ResumeLayout(false);
+
         }
 
         #endregion

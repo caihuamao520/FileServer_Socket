@@ -9,11 +9,16 @@ using System.Windows.Forms;
 
 namespace FileClient
 {
-    public partial class Form1 : Form
+    public partial class fro_Mian : Form
     {
-        public Form1()
+        public fro_Mian()
         {
             InitializeComponent();
+        }
+
+        private void fro_Mian_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
