@@ -3,3 +3,5 @@
 /FileServer/bin
 /FileServer/obj
 /.vs
+/SocketLib/bin
+/SocketLib/obj

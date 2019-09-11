@@ -132,21 +132,12 @@ namespace FileServer
                     //ShowMsg(strMsg);
                     this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到信息，内容为：{1}", sokClient.RemoteEndPoint, strMsg) });
                 }
-                else if (arrMsgRec[0] == 1) // 表示接收到的是文件；  
+                else if (arrMsgRec[0] == 1) // 表示接收到的是文件信息
                 {
-                    //SaveFileDialog sfd = new SaveFileDialog();
 
-                    //if (sfd.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-                    //{// 在上边的 sfd.ShowDialog（） 的括号里边一定要加上 this 否则就不会弹出 另存为 的对话框，而弹出的是本类的其他窗口，，这个一定要注意！！！【解释：加了this的sfd.ShowDialog(this)，“另存为”窗口的指针才能被SaveFileDialog的对象调用，若不加thisSaveFileDialog 的对象调用的是本类的其他窗口了，当然不弹出“另存为”窗口。】  
-
-                    //    string fileSavePath = sfd.FileName;// 获得文件保存的路径；  
-                    //    // 创建文件流，然后根据路径创建文件；  
-                    //    using (FileStream fs = new FileStream(fileSavePath, FileMode.Create))
-                    //    {
-                    //        fs.Write(arrMsgRec, 1, length - 1);
-                    //        ShowMsg("文件保存成功：" + fileSavePath);
-                    //    }
-                    //}
+                }
+                else if (arrMsgRec[0] == 2) // 表示接收到的是文件；  
+                {
                     int i = 0;
                     string strNewFileNamePath = string.Empty;
                     do
@@ -159,9 +150,14 @@ namespace FileServer
                     using (FileStream fs = new FileStream(strNewFileNamePath, FileMode.OpenOrCreate))
                     {
                         fs.Write(arrMsgRec, 1, length - 1);
+                        fs.Close();
                     }
 
                     this.Invoke(_displayContent, new object[] { string.Format("从IP:'{0}'收到文件流，内容保存成功。", sokClient.RemoteEndPoint) });
+                }
+                else if (arrMsgRec[0] == 3) // 表示接收到的是文件传输结束
+                {
+                    //Path.GetExtension
                 }
                 else
                 {

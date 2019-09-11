@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileClient", "FileClient\Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer", "FileServer\FileServer.csproj", "{9519FDF4-8220-4B0B-93A0-F6E4BEA66695}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketLib", "SocketLib\SocketLib.csproj", "{44B8554B-710E-4331-92DF-7A4B927285E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9519FDF4-8220-4B0B-93A0-F6E4BEA66695}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9519FDF4-8220-4B0B-93A0-F6E4BEA66695}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9519FDF4-8220-4B0B-93A0-F6E4BEA66695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44B8554B-710E-4331-92DF-7A4B927285E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B8554B-710E-4331-92DF-7A4B927285E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B8554B-710E-4331-92DF-7A4B927285E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B8554B-710E-4331-92DF-7A4B927285E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

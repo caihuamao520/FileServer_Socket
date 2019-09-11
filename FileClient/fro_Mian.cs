@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using SocketLib;
 
 namespace FileClient
 {
@@ -78,7 +79,7 @@ namespace FileClient
 
         private void linkUpNetFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (_MainSendMsg == null) return;
+            //if (_MainSendMsg == null) return;
 
             this.linkUpNetFile.Enabled = false;
 
@@ -92,17 +93,26 @@ namespace FileClient
                 ofd.Title = "选择一个需要上传的文件";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
+                    //获取文件信息
+                    SocketFileInfor afi = new SocketFileInfor();
+                    afi = afi.GetFileInfor(ofd.FileName);
+
                     FileStream fs = new FileStream(ofd.FileName, FileMode.Open);
-                    int iFileMaxSize = 1024 * 1024 * 20;
+                    int iFileMaxSize = 1024 * 1024 * 20;//文件缓存区大小
                     if (fs.Length < iFileMaxSize)
                     {
+                        //发送文件信息
+
+                        //发送文件内容
                         byte[] buferFS = new byte[iFileMaxSize];
                         int iReadCount = fs.Read(buferFS, 0, iFileMaxSize);
                         byte[] buferSendContent = new byte[iReadCount + 1];
-                        buferSendContent[0] = 1;
-
+                        buferSendContent[0] = 2;
+                        
                         Buffer.BlockCopy(buferFS, 0, buferSendContent, 1, iReadCount);
                         _MainSendMsg.Send(buferSendContent);
+
+                        //告知服务端内容发送完成
                     }
                     else
                     {
